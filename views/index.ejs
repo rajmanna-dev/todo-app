@@ -4,8 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles/main.css" />
+    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon" />
     <title>MyTodo</title>
   </head>
+
   <body>
     <header>
       <div class="logo">
@@ -14,9 +16,10 @@
           <span class="purple-color">to</span>do
         </p>
       </div>
-      <div class="user-input">
+      <form action="/todo" method="post" class="user-input">
         <input
           type="text"
+          name="todo-input"
           class="todo-input"
           placeholder="Add a task"
           required
@@ -40,14 +43,14 @@
             <path d="M12 8v8" />
           </svg>
         </button>
-      </div>
+      </form>
     </header>
     <main>
       <section class="status-section">
         <div class="status">
           <div class="todo-count">
             <p class="title">Total tasks</p>
-            <span class="circle">0</span>
+            <span class="circle"><%= locals.todo.length %></span>
           </div>
           <div class="todo-count">
             <p class="title">Completed tasks</p>
@@ -55,8 +58,53 @@
           </div>
         </div>
       </section>
-      <hr />
       <section class="task-list">
+        <% if (todo.length > 0) { %>
+        <!-- Printing all the todo's -->
+        <% for (let i = 0; i < todo.length; i++) { %>
+        <form class="todo-card" action="/todo" method="post">
+          <button class="circular-button">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-circle"
+            >
+              <circle cx="12" cy="12" r="10" />
+            </svg>
+          </button>
+          <p class="todoTitle"><%= todo[i].todoTitle %></p>
+          <button class="delete-button" name="delete">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-trash-2"
+            >
+              <path d="M3 6h18" />
+              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+              <line x1="10" x2="10" y1="11" y2="17" />
+              <line x1="14" x2="14" y1="11" y2="17" />
+            </svg>
+          </button>
+        </form>
+        <% } %>
+        <!-- If no todo's found -->
+        <% } else { %>
+        <hr />
         <div class="empty-container">
           <svg
             width="56"
@@ -86,9 +134,10 @@
           </svg>
           <p class="empty-container-title">No todo's found!</p>
           <p class="empty-container-desc">
-            Try typing 'Pay uitilies bill by Friday 6pm'
+            Try typing 'Pay utilities bill by Friday 6pm'
           </p>
         </div>
+        <% } %>
       </section>
     </main>
   </body>
